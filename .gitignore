@@ -1,0 +1,10 @@
+.hydra/
+__pycache__/
+datasets/
+lightning_logs/
+logs/
+temp/
+*.log
+*.pyc
+*.sh
+model/

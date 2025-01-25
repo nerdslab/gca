@@ -1,0 +1,53 @@
+# distributed training
+hydra:
+  job_logging:
+    root:
+      handlers: [file, console]  # logging to file only.
+  run:
+    dir: logs/SimCLR/${dataset}
+task: None
+dataset: ImageNet100 # SVHN, CIFAR10, CIFAR100, STL10, ImageNet100
+dataset_dir: "../imagenet100" # path to dataset
+len_train_loader: None
+backbone: resnet50
+projection_dim: 128 # "[...] to project the representation to a 128-dimensional latent space"
+strong_DA: None
+
+accelerator: gpu
+strategy: ddp
+nodes: 1
+gpus: 4 # I recommend always assigning 1 GPU to 1 node
+nr: 0 # machine nr. in node (0 -- nodes - 1)
+dataparallel: 0 # Use DataParallel instead of DistributedDataParallel
+workers: 16
+
+# train options
+seed: 42 # sacred handles automatic seeding when passed in the config
+batch_size: 128
+image_size: 224
+start_epoch: 0
+pretrain: False 
+max_epochs: 200
+# model options
+optimizer: "Adam" # SGD, Adam, LARS is not implemented
+# loss options
+learning_rate: 0.6 # initial lr = 0.3 * batch_size / 256
+momentum: 0.9
+weight_decay: 1.0e-6 # "weight decay of 10−6"
+epsilon: 0.5 # temperature
+iterations: 10
+lam: 0.01
+q: 0.6
+# reload options
+pretrained_model_path:  null 
+epoch_num: 200 # set to checkpoint number
+reload: False
+# logistic regression options
+logistic_batch_size: 512
+finetune_epochs: 100
+log_interval: 50
+load_epoch: 200  # checkpoint for finetune
+relax_item1: 0.5   # relax_item1 for UOT view 1
+relax_item2: 0.5 # relax_item2 for UOT view 2
+r1: 1   # relax_item1 for UOT view 1
+r2: 0.02 # relax_item2 for UOT view 2

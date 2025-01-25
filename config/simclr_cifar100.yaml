@@ -1,0 +1,48 @@
+# distributed training
+hydra:
+  job_logging:
+    root:
+      handlers: [file, console]  # logging to file only.
+  run:
+    dir: logs/SimCLR/${dataset}
+task: None
+dataset: cifar100
+dataset_dir: "./datasets"
+len_train_loader: None
+backbone: resnet18
+projection_dim: 128 # "[...] to project the representation to a 128-dimensional latent space"
+strong_DA: None
+
+accelerator: gpu
+strategy: ddp
+nodes: 1
+gpus: 2 # I recommend always assigning 1 GPU to 1 node
+nr: 0 # machine nr. in node (0 -- nodes - 1)
+dataparallel: 0 # Use DataParallel instead of DistributedDataParallel
+workers: 16
+# train options
+seed: 42 # sacred handles automatic seeding when passed in the config
+batch_size: 512
+image_size: 32
+start_epoch: 0
+pretrain: False 
+max_epochs: 500
+# model options
+optimizer: "SGD" # Adam, LARS is not implemented
+# loss options
+learning_rate: 0.6 # initial lr = 0.3 * batch_size / 256
+momentum: 0.9
+weight_decay: 1.0e-6 # weight decay of 10−6"
+epsilon: 0.5 # temperature
+iterations: 10
+lam: 0.01
+q: 0.98
+# reload options
+pretrained_model_path: null # set to the directory containing `checkpoint_##.tar`
+epoch_num: 200 # set to checkpoint number
+reload: False
+# logistic regression options
+logistic_batch_size: 512
+finetune_epochs: 200
+log_interval: 50
+load_epoch: 500  # checkpoint for finetune
