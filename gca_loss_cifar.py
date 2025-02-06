@@ -253,7 +253,7 @@ class gca_rince(base):
 
 
 class gca_uot(base):
-    def  __init__(self, batch_size, epsilon, iterations=10, lam=None, q=None, relax_items1=1e-3 , relax_items2=1e-3):
+    def __init__(self, batch_size, epsilon, iterations=10, lam=0.01, q=0.6,relax_items1=1e-4, relax_items2=1e-4,r1=1.0, r2=1.0):
         super(gca_uot,self).__init__(batch_size, epsilon, iterations=iterations, lam=lam, q=q)
         self.tau=1e5 #1e5
         self.stopThr=1e-16
@@ -261,6 +261,8 @@ class gca_uot(base):
         self.relax_items2=relax_items2
         self.lam=lam
         self.q=q
+        self.r1=r1
+        self.r2=r2
     
     def forward(self,z,C=None):
         batch_size=z.size(0)//2
@@ -305,7 +307,7 @@ class gca_uot(base):
         targets[::2] += 1  # target of 2k element is 2k+1
         targets[1::2] -= 1  # target of 2k+1 element is 2k
         kl_logits=F.cross_entropy(P.log(), targets.long().to(P.device))
-        logits=0.2*(-(P[P_tgt.bool()]/u).pow(self.q)/self.q+(self.lam*(P_tgt/u).sum(axis=1)).pow(self.q)/self.q)+kl_logits
+        logits=self.r2*(-(P[P_tgt.bool()]/u).pow(self.q)/self.q+(self.lam*(P_tgt/u).sum(axis=1)).pow(self.q)/self.q)+self.r1*kl_logits
         return logits.mean()
 
 

@@ -46,3 +46,7 @@ logistic_batch_size: 512
 finetune_epochs: 200
 log_interval: 50
 load_epoch: 500  # checkpoint for finetune
+relax_item1: 0.2   # relax_item1 for UOT view 1
+relax_item2: 0.2 # relax_item2 for UOT view 2
+r1: 1   # relax_item1 for UOT view 1
+r2: 1 # relax_item2 for UOT view 2

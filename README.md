@@ -61,22 +61,24 @@ python ssl_pretrain.py \
     --config-name "simclr_cifar10.yaml" \
     --config-path "./config/" \
     task=gca_uot \
-    dataset=cifar10 \
+    dataset=CIFAR10 \
     dataset_dir="./datasets" \
     batch_size=512 \
-    seed=64 \
+    seed=32 \
     backbone=resnet18 \
     projection_dim=128 \
     strong_DA=None \
     gpus=1 \
     workers=16 \
-    optimizer='Adam' \
+    optimizer='SGD' \
     learning_rate=0.03 \
     momentum=0.9 \
     weight_decay=1e-6 \
     lam=0.01 \
     q=0.6 \
-    max_epochs=500
+    max_epochs=500 \
+    r1=1 \
+    r2=0.2
 ```
 
 ---
