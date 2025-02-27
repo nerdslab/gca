@@ -152,8 +152,11 @@ python ssl_pretrain.py \
 If you find this repository helpful for your research, **please cite** our paper:
 
 ```bibtex
-@inproceedings{chenyour,
+@article{chen2025your,
   title={Your contrastive learning problem is secretly a distribution alignment problem},
-  author={Chen, Zihao and Lin, Chi-Heng and Liu, Ran and Xiao, Jingyun and Dyer, Eva L},
-  booktitle={The Thirty-eighth Annual Conference on Neural Information Processing Systems}
+  author={Chen, Zihao and Lin, Chi-Heng and Liu, Ran and Xiao, Jingyun and Dyer, Eva},
+  journal={Advances in Neural Information Processing Systems},
+  volume={37},
+  pages={91597--91617},
+  year={2025}
 }
