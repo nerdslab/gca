@@ -188,11 +188,14 @@ class hs_rince(base):
         self.q = q
     
     def forward(self,z,C=None):
-        batch_size=z.size(0)//2
-        P_tgt = torch.cat([torch.arange(batch_size) for i in range(2)], dim=0)
-        P_tgt = ((P_tgt.unsqueeze(0) == P_tgt.unsqueeze(1)).float()).to(z.device)
-        mask = torch.eye(P_tgt.shape[0]).to(z.device)
-        P_tgt = P_tgt - mask
+        # batch_size=z.size(0)//2
+        # P_tgt = torch.cat([torch.arange(batch_size) for i in range(2)], dim=0)
+        # P_tgt = ((P_tgt.unsqueeze(0) == P_tgt.unsqueeze(1)).float()).to(z.device)
+        # mask = torch.eye(P_tgt.shape[0]).to(z.device)
+        # P_tgt = (P_tgt - mask)/z.size(0)
+        ids = torch.arange(z.size(0), device=z.device) // 2   # [0,0,1,1,2,2,...]
+        P_tgt = (ids[:, None] == ids[None, :]).float()
+        P_tgt.fill_diagonal_(0)  
         u = z.new_ones((z.size(0),), requires_grad=False) /z.size(0)
         v = z.new_ones((z.size(0),), requires_grad=False) /z.size(0)
         K = self.gibs_kernel(z)
@@ -215,11 +218,11 @@ class gca_rince(base):
 
     def forward(self,z,C=None):
         z = F.normalize(z, dim=1)
-        batch_size=z.size(0)//2
-        P_tgt = torch.cat([torch.arange(batch_size) for i in range(2)], dim=0)
-        P_tgt = ((P_tgt.unsqueeze(0) == P_tgt.unsqueeze(1)).long()).to(z.device)
-        mask = torch.eye(z.size(0), dtype=torch.bool, device=z.device)
-        P_tgt = P_tgt.masked_fill(mask, 0) 
+        # batch_size=z.size(0)//2
+        # P_tgt = torch.cat([torch.arange(batch_size) for i in range(2)], dim=0)
+        # P_tgt = ((P_tgt.unsqueeze(0) == P_tgt.unsqueeze(1)).long()).to(z.device)
+        # mask = torch.eye(z.size(0), dtype=torch.bool, device=z.device)
+        # P_tgt = P_tgt.masked_fill(mask, 0) 
         u = z.new_ones((z.size(0),), requires_grad=False) /z.size(0)
         v = z.new_ones((z.size(0),), requires_grad=False) /z.size(0)
         K = self.gibs_kernel(z)
@@ -265,12 +268,15 @@ class gca_uot(base):
         self.r2=r2
     
     def forward(self,z,C=None):
-        batch_size=z.size(0)//2
+        # batch_size=z.size(0)//2
         z=F.normalize(z,dim=1)
-        P_tgt = torch.cat([torch.arange(batch_size) for i in range(2)], dim=0)
-        P_tgt = ((P_tgt.unsqueeze(0) == P_tgt.unsqueeze(1)).float()).to(z.device)
-        mask = torch.eye(P_tgt.shape[0]).to(z.device)
-        P_tgt = (P_tgt - mask)/z.size(0)
+        # P_tgt = torch.cat([torch.arange(batch_size) for i in range(2)], dim=0)
+        # P_tgt = ((P_tgt.unsqueeze(0) == P_tgt.unsqueeze(1)).float()).to(z.device)
+        # mask = torch.eye(P_tgt.shape[0]).to(z.device)
+        # P_tgt = (P_tgt - mask)/z.size(0)
+        ids = torch.arange(z.size(0), device=z.device) // 2   # [0,0,1,1,2,2,...]
+        P_tgt = (ids[:, None] == ids[None, :]).float()
+        P_tgt.fill_diagonal_(0)  
 
         u = z.new_ones((z.size(0),), requires_grad=False) /z.size(0)
         v = z.new_ones((z.size(0),), requires_grad=False) /z.size(0)

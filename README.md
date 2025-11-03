@@ -2,6 +2,12 @@
 
 Generalized Contrastive Alignment (GCA) provides a robust framework for self-supervised learning tasks, supporting various datasets and augmentation methods.
 
+This is the repo for the paper:
+
+[**Your Contrastive Learning Problem is Secretly a Distribution Alignment Problem**](https://arxiv.org/abs/2502.20141)
+
+[![arXiv](https://img.shields.io/badge/arXiv-2502.20141-b31b1b.svg)](https://arxiv.org/abs/2502.20141)
+
 ---
 
 ## **Environment Setup**
