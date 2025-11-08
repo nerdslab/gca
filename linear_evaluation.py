@@ -235,12 +235,12 @@ def linear_evaluation_cifar(args, train_loader, test_loader, n_classes, device):
     cl_model = ContrastiveLearning(args)
     if args.pretrained_model_path is not None:
         #cl_model.load_state_dict(torch.load(args.pretrained_model_path)["state_dict"],strict=False)
-        cl_model.load_state_dict(torch.load(args.pretrained_model_path),strict=False)
+        cl_model.load_state_dict(torch.load(args.pretrained_model_path, weights_only=False),strict=False)
     else:
         if args.dataset == "CIFAR10C":
-            cl_model.load_state_dict(torch.load(f"model/{args.task}_{args.backbone}_da_{args.strong_DA}_seed{args.seed}_epoch={args.load_epoch-1}_CIFAR10.ckpt")["state_dict"],strict=True)
+            cl_model.load_state_dict(torch.load(f"model/{args.task}_{args.backbone}_da_{args.strong_DA}_seed{args.seed}_epoch={args.load_epoch-1}_CIFAR10.ckpt", weights_only=False)["state_dict"],strict=True)
         else:
-            cl_model.load_state_dict(torch.load(f"model/{args.task}_{args.backbone}_da_{args.strong_DA}_seed{args.seed}_epoch={args.load_epoch-1}_{args.dataset}.ckpt")["state_dict"],strict=True)
+            cl_model.load_state_dict(torch.load(f"model/{args.task}_{args.backbone}_da_{args.strong_DA}_seed{args.seed}_epoch={args.load_epoch-1}_{args.dataset}.ckpt", weights_only=False)["state_dict"],strict=True)
     pre_model=cl_model.model
     model = LinModel(pre_model.enc, feature_dim=pre_model.feature_dim, n_classes=n_classes).to(device)
     model.enc.requires_grad = False
@@ -263,11 +263,11 @@ def linear_evaluation_imagenet_svhn(args, train_loader, test_loader, n_classes, 
     pre_model = cl_model.model.to(device)
     if args.pretrained_model_path is not None:
         print('loading from pretrained model',args.pretrained_model_path)
-        checkpoint = torch.load(args.pretrained_model_path)
+        checkpoint = torch.load(args.pretrained_model_path, weights_only=False)
         state_dict = checkpoint['state_dict']
         #cl_model.load_state_dict(torch.load(args.pretrained_model_path)["state_dict"],strict=False)
     else:
-        checkpoint = torch.load(f"model/{args.task}_{args.backbone}_da_{args.strong_DA}_seed{args.seed}_epoch={args.load_epoch-1}_{args.dataset}.ckpt")
+        checkpoint = torch.load(f"model/{args.task}_{args.backbone}_da_{args.strong_DA}_seed{args.seed}_epoch={args.load_epoch-1}_{args.dataset}.ckpt", weights_only=False)
         state_dict = checkpoint['state_dict']
         #cl_model.load_state_dict(torch.load(f"model/{args.task}_{args.backbone}_da_{args.strong_DA}_seed{args.seed}_epoch={args.load_epoch-1}_{args.dataset}.ckpt")["state_dict"],strict=True)
     for key in list(state_dict.keys()):

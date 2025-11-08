@@ -8,6 +8,8 @@ This is the repo for the paper:
 
 [![arXiv](https://img.shields.io/badge/arXiv-2502.20141-b31b1b.svg)](https://arxiv.org/abs/2502.20141)
 
+![Poster](poster.png)
+
 ---
 
 ## **Environment Setup**
@@ -126,7 +128,7 @@ python linear_evaluation.py \
 ## **Notes**
 - Ensure that the `dataset_dir` contains the datasets in the correct structure.
 - Customize parameters in the scripts to fit your experimental needs. As an example for SVHN,
-
+- We modify the linear_evaluation to make it able to run on new pytorch version 2.9.0.
 
 ```bash
 python ssl_pretrain.py \
